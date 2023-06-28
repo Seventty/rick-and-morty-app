@@ -2,20 +2,24 @@
   <ion-toolbar>
     <ion-title>Rick and Morty App</ion-title>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar [debounce]="1000" (ionInput)="filterCharacters($event)" [(ngModel)]="searchQuery" class="search-bar" searchIcon="search-circle" placeholder="Busca tu personaje"></ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let character of characters" [routerLink]="['/character-card/' + character.id]">
+    <ion-item *ngFor="let character of filteredCharacters" [routerLink]="['/character-card/' + character.id]">
       <ion-avatar slot="start">
         <img src="{{character.image}}" alt="{{character.name}}">
       </ion-avatar>
       <ion-label>
-         {{character.name}}
+        {{character.name}}
       </ion-label>
     </ion-item>
-    <ion-infinite-scroll>
-      <ion-infinite-scroll-content loadingSpinner="circular" color="primary" loadingText="Cargando más personajes..."></ion-infinite-scroll-content>
+    <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+      <ion-infinite-scroll-content loadingSpinner="circular" color="primary"
+        loadingText="Cargando más personajes..."></ion-infinite-scroll-content>
     </ion-infinite-scroll>
   </ion-list>
 </ion-content>
